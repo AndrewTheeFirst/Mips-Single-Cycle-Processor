@@ -188,11 +188,11 @@ begin
 
     -- mux logic + combinational
     PC_PLUS_FOUR <= PC_OUT_WIRE + X"00000004";
-    Branch_MUXSEL <= '1' when ((BEQ_WIRE = '1' and ALUZeroBit_WIRE = '1')
-    or (BNE_WIRE = '1' and ALUZeroBit_WIRE = '0'))
-    else '0';
+    Branch_MUXSEL <= '1' when   ((BEQ_WIRE = '1' and ALUZeroBit_WIRE = '1') or 
+                                 (BNE_WIRE = '1' and ALUZeroBit_WIRE = '0'))
+                else '0';
     JumpAddr_WIRE <= PC_PLUS_FOUR(31 downto 28) & Instruction(25 downto 0) & "00";
-    
+
     with ALUSrc_WIRE select ALUSrc_MUXOUT <=
         read_data2_WIRE when '0',
         SignExtendImm when others;
@@ -204,7 +204,7 @@ begin
     -- FEEDS INTO WRITE DATA
     with Jal_WIRE select Jal_MemtoReg_MUXOUT <=
         MemtoReg_MUXOUT when '0',
-        read_data1_WIRE when others;
+        PC_PLUS_FOUR when others;
         
     with RegDst_WIRE select RegDst_MUXOUT <= 
         Instruction(20 downto 16) when '0',
@@ -217,7 +217,7 @@ begin
 
     with Branch_MUXSEL select Branch_MUXOUT <=
         PC_PLUS_FOUR when '0',
-        (SignExtendImm(29 downto 2) & "00") + PC_PLUS_FOUR when others; -- adds pc + 4 + branch offset
+        (SignExtendImm(29 downto 0) & "00") + PC_PLUS_FOUR when others; -- adds pc + 4 + branch offset
 
     with Jump_MUXSEL select Jump_MUXOUT <=
         Branch_MUXOUT when '0',
