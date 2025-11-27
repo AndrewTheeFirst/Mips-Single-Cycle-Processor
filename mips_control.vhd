@@ -2,14 +2,16 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 entity mips_control is
-    port(   opcode              : in std_logic_vector(5 downto 0);
-            funct               : in std_logic_vector(5 downto 0);
-            RegDst, ALUSrc      : out std_logic;
-            Jump, Jal, Jr       : out std_logic;
-            Beq, Bne            : out std_logic;
-            MemRead, MemWrite   : out std_logic;
-            RegWrite, MemtoReg  : out std_logic;
-            ALUControl          : out std_logic_vector(3 downto 0) );
+    port(   
+        opcode              : in std_logic_vector(5 downto 0);
+        funct               : in std_logic_vector(5 downto 0);
+        RegDst, ALUSrc      : out std_logic;
+        Jump, Jal, Jr       : out std_logic;
+        Beq, Bne            : out std_logic;
+        MemRead, MemWrite   : out std_logic;
+        RegWrite, MemtoReg  : out std_logic;
+        ALUControl          : out std_logic_vector(3 downto 0)
+    );
 end mips_control;
 
 architecture arch of mips_control is begin
@@ -18,7 +20,7 @@ architecture arch of mips_control is begin
             when "000000" =>
                 case (funct) is
                     -- R TYPES
-                    when "10" & X"0" => -- add (0x20)
+                    when "100000" => -- add (0x20)
                         RegDst      <=  '1';
                         ALUSrc      <=  '0';
                         Jump        <=  '0';
@@ -31,7 +33,7 @@ architecture arch of mips_control is begin
                         RegWrite    <=  '1';
                         MemtoReg    <=  '0';
                         ALUControl  <=  "0010";
-                    when "10" & X"1" => -- addu (0x21)
+                    when "100001" => -- addu (0x21)
                         RegDst      <=  '1';
                         ALUSrc      <=  '0';
                         Jump        <=  '0';
@@ -44,7 +46,7 @@ architecture arch of mips_control is begin
                         RegWrite    <=  '1';
                         MemtoReg    <=  '0';
                         ALUControl  <=  "0010";
-                    when "10" & X"4" => -- and (0x24)
+                    when "100100" => -- and (0x24)
                         RegDst      <=  '1';
                         ALUSrc      <=  '0';
                         Jump        <=  '0';
@@ -57,7 +59,7 @@ architecture arch of mips_control is begin
                         RegWrite    <=  '1';
                         MemtoReg    <=  '0';
                         ALUControl  <=  "0000";
-                    when "00" & X"8" => -- jr (0x08)
+                    when "001000" => -- jr (0x08)
                         RegDst      <=  '-';
                         ALUSrc      <=  '-';
                         Jump        <=  '0';
@@ -70,7 +72,7 @@ architecture arch of mips_control is begin
                         RegWrite    <=  '0';
                         MemtoReg    <=  '-';
                         ALUControl  <=  "----";
-                    when "10" & X"7" => -- nor (0x27)
+                    when "100111" => -- nor (0x27)
                         RegDst      <=  '1';
                         ALUSrc      <=  '0';
                         Jump        <=  '0';
@@ -83,7 +85,7 @@ architecture arch of mips_control is begin
                         RegWrite    <=  '1';
                         MemtoReg    <=  '0';
                         ALUControl  <=  "1100";
-                    when "10" & X"5" => -- or (0x25)
+                    when "100101" => -- or (0x25)
                         RegDst      <=  '1';
                         ALUSrc      <=  '0';
                         Jump        <=  '0';
@@ -96,7 +98,7 @@ architecture arch of mips_control is begin
                         RegWrite    <=  '1';
                         MemtoReg    <=  '0';
                         ALUControl  <=  "0001";
-                    when "10" & X"A" => -- slt (0x2a)
+                    when "101010" => -- slt (0x2a)
                         RegDst      <=  '1';
                         ALUSrc      <=  '0';
                         Jump        <=  '0';
@@ -109,7 +111,7 @@ architecture arch of mips_control is begin
                         RegWrite    <=  '1';
                         MemtoReg    <=  '0';
                         ALUControl  <=  "0111";
-                    when "00" & X"0" => -- sll (0x00)
+                    when "000000" => -- sll (0x00)
                         RegDst      <=  '1';
                         ALUSrc      <=  '0';
                         Jump        <=  '0';
@@ -122,7 +124,7 @@ architecture arch of mips_control is begin
                         RegWrite    <=  '1';
                         MemtoReg    <=  '0';
                         ALUControl  <=  "1000";
-                    when "00" & X"2" => -- srl (0x02)
+                    when "000010" => -- srl (0x02)
                         RegDst      <=  '1';
                         ALUSrc      <=  '0';
                         Jump        <=  '0';
@@ -135,7 +137,7 @@ architecture arch of mips_control is begin
                         RegWrite    <=  '1';
                         MemtoReg    <=  '0';
                         ALUControl  <=  "1001";
-                    when "00" & X"4" => -- sllv (0x04)
+                    when "000100" => -- sllv (0x04)
                         RegDst      <=  '1';
                         ALUSrc      <=  '0';
                         Jump        <=  '0';
@@ -148,7 +150,7 @@ architecture arch of mips_control is begin
                         RegWrite    <=  '1';
                         MemtoReg    <=  '0';
                         ALUControl  <=  "1010";
-                    when "00" & X"6" => -- srlv (0x06)
+                    when "000110" => -- srlv (0x06)
                         RegDst      <=  '1';
                         ALUSrc      <=  '0';
                         Jump        <=  '0';
@@ -161,7 +163,7 @@ architecture arch of mips_control is begin
                         RegWrite    <=  '1';
                         MemtoReg    <=  '0';
                         ALUControl  <=  "1011";
-                    when "10" & X"2" => -- sub (0x22)
+                    when "100010" => -- sub (0x22)
                         RegDst      <=  '1';
                         ALUSrc      <=  '0';
                         Jump        <=  '0';
@@ -174,7 +176,7 @@ architecture arch of mips_control is begin
                         RegWrite    <=  '1';
                         MemtoReg    <=  '0';
                         ALUControl  <=  "0110";
-                    when "10" & X"3" => -- subu (0x23)
+                    when "100011" => -- subu (0x23)
                         RegDst      <=  '1';
                         ALUSrc      <=  '0';
                         Jump        <=  '0';
@@ -201,7 +203,7 @@ architecture arch of mips_control is begin
                         MemtoReg    <=  '0';
                         ALUControl  <=  "0000";
                 end case; 
-            when "00" & X"8" => -- addi
+            when "001000" => -- addi
                 RegDst      <=  '0';
                 ALUSrc      <=  '1';
                 Jump        <=  '0';
@@ -214,9 +216,9 @@ architecture arch of mips_control is begin
                 RegWrite    <=  '1';
                 MemtoReg    <=  '0';
                 ALUControl  <=  "0010";
-            when "00" & X"9" => -- addiu
-                RegDst      <=  '1';
-                ALUSrc      <=  '0';
+            when "001001" => -- addiu
+                RegDst      <=  '0';
+                ALUSrc      <=  '1';
                 Jump        <=  '0';
                 Jal         <=  '0';
                 Jr          <=  '0';
@@ -227,9 +229,9 @@ architecture arch of mips_control is begin
                 RegWrite    <=  '1';
                 MemtoReg    <=  '0';
                 ALUControl  <=  "0010";
-            when "00" & X"C" => -- andi
-                RegDst      <=  '1';
-                ALUSrc      <=  '0';
+            when "001100" => -- andi
+                RegDst      <=  '0';
+                ALUSrc      <=  '1';
                 Jump        <=  '0';
                 Jal         <=  '0';
                 Jr          <=  '0';
@@ -240,7 +242,7 @@ architecture arch of mips_control is begin
                 RegWrite    <=  '1';
                 MemtoReg    <=  '0';
                 ALUControl  <=  "0000";
-            when "00" & X"4" => -- beq
+            when "000100" => -- beq
                 RegDst      <=  '-';
                 ALUSrc      <=  '0';
                 Jump        <=  '0';
@@ -253,7 +255,7 @@ architecture arch of mips_control is begin
                 RegWrite    <=  '0';
                 MemtoReg    <=  '-';
                 ALUControl  <=  "0110";
-            when "00" & X"5" => -- bne
+            when "000101" => -- bne
                 RegDst      <=  '-';
                 ALUSrc      <=  '0';
                 Jump        <=  '0';
@@ -266,7 +268,7 @@ architecture arch of mips_control is begin
                 RegWrite    <=  '0';
                 MemtoReg    <=  '-';
                 ALUControl  <=  "0110";
-            when "00" & X"2" => -- j
+            when "000010" => -- j
                 RegDst      <=  '-';
                 ALUSrc      <=  '-';
                 Jump        <=  '1';
@@ -279,7 +281,7 @@ architecture arch of mips_control is begin
                 RegWrite    <=  '0';
                 MemtoReg    <=  '-';
                 ALUControl  <=  "----";
-            when "00" & X"3" => -- jal 
+            when "000011" => -- jal 
                 RegDst      <=  '-';
                 ALUSrc      <=  '-';
                 Jump        <=  '1';
@@ -292,7 +294,7 @@ architecture arch of mips_control is begin
                 RegWrite    <=  '1';
                 MemtoReg    <=  '-';
                 ALUControl  <=  "----";
-            when "00" & X"F" => -- lui
+            when "001111" => -- lui
                 RegDst      <=  '0';
                 ALUSrc      <=  '1';
                 Jump        <=  '0';
@@ -305,7 +307,7 @@ architecture arch of mips_control is begin
                 RegWrite    <=  '1';
                 MemtoReg    <=  '0';
                 ALUControl  <=  "1101";
-            when "10" & X"3" => -- lw (0x23)
+            when "100011" => -- lw (0x23)
                 RegDst      <=  '0';
                 ALUSrc      <=  '1';
                 Jump        <=  '0';
@@ -318,7 +320,7 @@ architecture arch of mips_control is begin
                 RegWrite    <=  '1';
                 MemtoReg    <=  '1';
                 ALUControl  <=  "0010";
-            when "00" & X"D" => -- ori
+            when "001101" => -- ori
                 RegDst      <=  '0';
                 ALUSrc      <=  '1';
                 Jump        <=  '0';
@@ -331,7 +333,7 @@ architecture arch of mips_control is begin
                 RegWrite    <=  '1';
                 MemtoReg    <=  '0';
                 ALUControl  <=  "0001";
-            when "00" & X"A" => -- slti
+            when "001010" => -- slti
                 RegDst      <=  '0';
                 ALUSrc      <=  '1';
                 Jump        <=  '0';
@@ -344,7 +346,7 @@ architecture arch of mips_control is begin
                 RegWrite    <=  '1';
                 MemtoReg    <=  '0';
                 ALUControl  <=  "0111";
-            when "10" & X"B" => -- sw (0x2b)
+            when "101011" => -- sw (0x2b)
                 RegDst      <=  '-';
                 ALUSrc      <=  '1';
                 Jump        <=  '0';
